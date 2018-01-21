@@ -1,10 +1,6 @@
 package me.droreo002.skywars.manager;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -269,7 +265,7 @@ public class Cuboid implements Iterable<Block>, Cloneable, ConfigurationSerializ
      *
      * @return array of Block objects representing the Cuboid corners
      */
-    public Block[] corners() {
+    public List<Block> corners() {
         Block[] res = new Block[8];
         World w = this.getWorld();
         res[0] = w.getBlockAt(this.x1, this.y1, this.z1);
@@ -280,7 +276,7 @@ public class Cuboid implements Iterable<Block>, Cloneable, ConfigurationSerializ
         res[5] = w.getBlockAt(this.x2, this.y1, this.z2);
         res[6] = w.getBlockAt(this.x2, this.y2, this.z1);
         res[7] = w.getBlockAt(this.x2, this.y2, this.z2);
-        return res;
+        return Arrays.asList(res);
     }
 
     /**

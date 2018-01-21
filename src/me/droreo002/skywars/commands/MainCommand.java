@@ -2,8 +2,12 @@ package me.droreo002.skywars.commands;
 
 import me.droreo002.skywars.MainPlugin;
 import me.droreo002.skywars.manager.Arena;
+import me.droreo002.skywars.manager.Cuboid;
 import me.droreo002.skywars.manager.util.ArenaStatus;
 import me.droreo002.skywars.manager.util.PlayerStatus;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -140,6 +144,22 @@ public class MainCommand implements CommandExecutor {
                     player.sendMessage(main.getPrefix() + "Saved the spawn location number : " + number + ". To your location!");
                     return false;
                 }
+                if (args[0].equalsIgnoreCase("edit")) {
+                    if (!player.hasPermission("osw.admin")) {
+                        player.sendMessage(main.getPrefix() + "No perms");
+                        return false;
+                    }
+                    if (main.on_setup.containsKey(player.getUniqueId())) {
+                        Arena arena = main.on_setup.get(player.getUniqueId());
+                        player.sendMessage(main.getPrefix() + "You're still on the edit mode on : " + arena.getName() + ". Arena!, please use /osw finish before using this command again!");
+                        return false;
+                    }
+                    String name = args[1];
+                    Arena arena = main.getGameManager().getArena(name);
+                    main.on_setup.put(player.getUniqueId(), arena);
+                    player.sendMessage(main.getPrefix() + "Now editing : " + arena.getName());
+                    return false;
+                }
                 if (args[0].equalsIgnoreCase("join")) {
                     if (!player.hasPermission("osw.player.join")) {
                         player.sendMessage(main.getPrefix() + "No perms");
@@ -151,6 +171,37 @@ public class MainCommand implements CommandExecutor {
                     }
                     String name = args[1];
 
+                }
+                if (args[0].equalsIgnoreCase("teleport")) {
+                    if (!player.hasPermission("osw.admin")) {
+                        player.sendMessage(main.getPrefix() + "No perms");
+                        return false;
+                    }
+                    String name = args[1];
+                    Arena arena = main.getGameManager().getArena(name);
+                    if (arena == null) {
+                        player.sendMessage(main.getPrefix() + "Error. cannot find that arena!");
+                        return false;
+                    }
+                    Location loc = arena.getCuboid().getCenter();
+                    player.teleport(loc);
+                    player.sendMessage(main.getPrefix() + "Teleported you to the center of : " +arena.getName()+". Arena!");
+                    return false;
+                }
+                if (args[0].equalsIgnoreCase("showcorner")) {
+                    if (!player.hasPermission("osw.admin")) {
+                        player.sendMessage(main.getPrefix() + "No perms");
+                        return false;
+                    }
+                    String name = args[1];
+                    Arena arena = main.getGameManager().getArena(name);
+                    if (arena == null) {
+                        player.sendMessage(main.getPrefix() + "Error. cannot find that arena!");
+                        return false;
+                    }
+                    Cuboid cub = arena.getCuboid();
+                    main.getEditorManager().showCorner(cub, player);
+                    return false;
                 }
             }
 

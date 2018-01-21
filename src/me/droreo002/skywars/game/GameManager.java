@@ -61,6 +61,7 @@ public class GameManager {
         return arenas;
     }
 
+    @Nullable
     public Arena getArena(String name) {
         if (!arenas.containsKey(name)) {
             return null;

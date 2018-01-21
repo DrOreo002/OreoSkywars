@@ -1,0 +1,9 @@
+name: OreoSkywars
+version: 1.0
+main: me.droreo002.skywars.MainPlugin
+authors: [DrOreo002]
+description: Good skywars plugin
+
+commands:
+  oreoskywars:
+    aliases: [osw, sw]

@@ -14,7 +14,6 @@ import java.util.*;
 
 public class GameManager {
 
-
     private HashMap<Arena, HashSet<UUID>> players = new HashMap<>();
     private HashMap<String, Arena> arenas = new HashMap<>();
     private HashMap<UUID, Arena> onArena = new HashMap<>();

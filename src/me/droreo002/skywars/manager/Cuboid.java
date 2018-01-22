@@ -18,6 +18,8 @@ public class Cuboid implements Iterable<Block>, Cloneable, ConfigurationSerializ
     private String worldName;
     private int x1, y1, z1;
     private int x2, y2, z2;
+    private Location loc1;
+    private Location loc2;
 
     /**
      * Construct a Cuboid given two Location objects which represent any two corners of the Cuboid.
@@ -35,6 +37,8 @@ public class Cuboid implements Iterable<Block>, Cloneable, ConfigurationSerializ
         this.x2 = Math.max(l1.getBlockX(), l2.getBlockX());
         this.y2 = Math.max(l1.getBlockY(), l2.getBlockY());
         this.z2 = Math.max(l1.getBlockZ(), l2.getBlockZ());
+        this.loc1 = l1;
+        this.loc2 = l2;
     }
 
     /**
@@ -582,7 +586,7 @@ public class Cuboid implements Iterable<Block>, Cloneable, ConfigurationSerializ
 
     @Override
     public String toString() {
-        return new String("Cuboid: " + this.worldName + "," + this.x1 + "," + this.y1 + "," + this.z1 + "=>" + this.x2 + "," + this.y2 + "," + this.z2);
+        return "Cuboid: " + this.worldName + "," + this.x1 + "," + this.y1 + "," + this.z1 + "=>" + this.x2 + "," + this.y2 + "," + this.z2;
     }
 
     public class CuboidIterator implements Iterator<Block> {
@@ -652,4 +656,11 @@ public class Cuboid implements Iterable<Block>, Cloneable, ConfigurationSerializ
 
     }
 
+    public Location getLoc1() {
+        return loc1;
+    }
+
+    public Location getLoc2() {
+        return loc2;
+    }
 }

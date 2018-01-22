@@ -1,8 +1,7 @@
 package me.droreo002.skywars.manager;
 
 import me.droreo002.skywars.MainPlugin;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
@@ -11,7 +10,7 @@ import java.util.*;
 public class EditorManager {
 
     private HashMap<UUID, Arena> on_setup = new HashMap<>();
-    private HashMap<Cuboid, List<Block>> showed_corners = new HashMap<>();
+    private HashMap<String, HashMap<Location, Material>> pBlocks = new HashMap<>();
     private MainPlugin main;
     private static EditorManager instance;
 
@@ -40,26 +39,41 @@ public class EditorManager {
     }
 
     public void showCorner(Cuboid cub, Player player) {
-        List<Block> blocks = cub.corners();
-        List<Material> saved = new ArrayList<>();
-        if (!showed_corners.containsKey(cub)) {
-            showed_corners.put(cub, blocks);
+        HashSet<Location> locs = getHollowCube(cub, cub.getLoc1(), cub.getLoc2(), 0.2);
+        for (Location l : locs) {
+            cub.getWorld().spawnParticle(Particle.CLOUD, l, 4);
         }
-        for (Block b : blocks) {
-            player.sendMessage(b.toString());
-            saved.add(b.getType());
-        }
-        for (Block b : blocks) {
-            player.sendMessage(main.getPrefix() + "Replaced corner with diamond block!. Block Material : " + b.getType().toString());
-            b.setType(Material.DIAMOND_BLOCK);
-        }
+        /*
         Bukkit.getScheduler().runTaskLater(main, () -> {
-            for (Material mat : saved) {
-                for (Block b : blocks) {
-                    b.setType(mat);
+
+            player.sendMessage(main.getPrefix() + "Removing all of the particles!");
+        }, 100L);
+        */
+    }
+
+    private HashSet<Location> getHollowCube(Cuboid cub, Location corner1, Location corner2, double particleDistance) {
+        HashSet<Location> result = new HashSet<>();
+        World world = cub.getWorld();
+        double minX = Math.min(corner1.getX(), corner2.getX());
+        double minY = Math.min(corner1.getY(), corner2.getY());
+        double minZ = Math.min(corner1.getZ(), corner2.getZ());
+        double maxX = Math.max(corner1.getX(), corner2.getX());
+        double maxY = Math.max(corner1.getY(), corner2.getY());
+        double maxZ = Math.max(corner1.getZ(), corner2.getZ());
+
+        for (double x = minX; x <= maxX; x+=particleDistance) {
+            for (double y = minY; y <= maxY; y+=particleDistance) {
+                for (double z = minZ; z <= maxZ; z+=particleDistance) {
+                    int components = 0;
+                    if (x == minX || x == maxX) components++;
+                    if (y == minY || y == maxY) components++;
+                    if (z == minZ || z == maxZ) components++;
+                    if (components >= 2) {
+                        result.add(new Location(world, x, y, z));
+                    }
                 }
             }
-            player.sendMessage(main.getPrefix() + "Replaced back the showed corner!");
-        }, 100L);
+        }
+        return result;
     }
 }

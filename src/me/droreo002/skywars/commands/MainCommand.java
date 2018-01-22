@@ -188,7 +188,7 @@ public class MainCommand implements CommandExecutor {
                     player.sendMessage(main.getPrefix() + "Teleported you to the center of : " +arena.getName()+". Arena!");
                     return false;
                 }
-                if (args[0].equalsIgnoreCase("showcorner")) {
+                if (args[0].equalsIgnoreCase("border")) {
                     if (!player.hasPermission("osw.admin")) {
                         player.sendMessage(main.getPrefix() + "No perms");
                         return false;

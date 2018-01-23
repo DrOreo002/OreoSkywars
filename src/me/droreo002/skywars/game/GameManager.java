@@ -52,6 +52,22 @@ public class GameManager {
         onArena.put(player.getUniqueId(), arena);
     }
 
+    public void removeArena(String name, Arena arena) {
+        if (!arenas.containsKey(name)) {
+            return;
+        }
+        arena.setStatus(ArenaStatus.DISABLED);
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (onArena.containsKey(player.getUniqueId())) {
+                Arena on = onArena.get(player.getUniqueId());
+                if (on.getName().equals(arena.getName())) {
+                    player.sendMessage(main.getPrefix() + "The arena that you're playing on want to get deleted. Please use another available arena!");
+                }
+            }
+        }
+        arenas.remove(name);
+    }
+
     public HashSet<UUID> getPlayers(Arena arena) {
         return players.get(arena);
     }

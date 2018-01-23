@@ -124,6 +124,14 @@ public class Arena {
         }
     }
 
+    public void delete() {
+        ConfigManager con = main.getConfigManager();
+        con.getConfig().set("ArenaData." + name, null);
+        con.saveConfig();
+        Bukkit.getLogger().info("Deleted arena : " + name);
+        main.getGameManager().removeArena(name, this);
+    }
+
     public boolean hasThisPlayer(Player player) {
         return cub.contains(player.getLocation());
     }
@@ -144,5 +152,9 @@ public class Arena {
 
     public ArenaType getType() {
         return type;
+    }
+
+    public void setStatus(ArenaStatus status) {
+        this.status = status;
     }
 }

@@ -37,6 +37,12 @@ public class MainCommand implements CommandExecutor {
         if (args.length > 0) {
             if (args.length == 1) {
                 switch (args[0].toLowerCase()) {
+                    case "delete":
+                        player.sendMessage(main.getPrefix() + "Delete the arena that specified. Usage : /osw delete <arena>");
+                        return false;
+                    case "border":
+                        player.sendMessage(main.getPrefix() + "Show the border on specified arena. Usage /osw border <arena>");
+                        return false;
                     case "help":
                         player.sendMessage(main.getPrefix() + "This is help command!");
                         return false;
@@ -202,6 +208,20 @@ public class MainCommand implements CommandExecutor {
                     Cuboid cub = arena.getCuboid();
                     main.getEditorManager().showCorner(cub, player);
                     return false;
+                }
+                if (args[0].equalsIgnoreCase("delete")) {
+                    if (!player.hasPermission("osw.admin")) {
+                        player.sendMessage(main.getPrefix() + "No perms");
+                        return false;
+                    }
+                    String name = args[1];
+                    Arena arena = main.getGameManager().getArena(name);
+                    if (arena == null) {
+                        player.sendMessage(main.getPrefix() + "Error. cannot find that arena!");
+                        return false;
+                    }
+                    player.sendMessage(main.getPrefix() + "Successfully deleted the arena called : " + arena.getName());
+                    arena.delete();
                 }
             }
 
